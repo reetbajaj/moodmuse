@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
-  "proxy": "https://<your-codespace-id>-5050.githubpreview.dev"
+  "proxy": "https://refactored-space-adventure-69vqpp4rjx6j24rvg-5050.app.github.dev"
+
   ,
 
   "dependencies": {
