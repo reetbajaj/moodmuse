@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
-import "./Login.css";
 import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const Login = ({ setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,14 +10,16 @@ const Login = ({ setUser }) => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  // Email/password login/signup
+  // ---------------- Email/Password Login & Signup ----------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
-    const url = isLogin ? "http://localhost:5050/api/login" : "http://localhost:5050/api/signup";
+
+    const url = isLogin ? "/api/login" : "/api/signup"; // proxy handles full URL
 
     try {
       const response = await fetch(url, {
@@ -26,9 +28,8 @@ const Login = ({ setUser }) => {
         body: JSON.stringify(formData),
       });
       const data = await response.json();
-      if (response.ok) {
-        setMessage(data.message);
 
+      if (response.ok) {
         const userData = isLogin
           ? data.user
           : { name: formData.name, email: formData.email };
@@ -36,11 +37,10 @@ const Login = ({ setUser }) => {
         localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
 
-        if (isLogin) {
-          navigate("/"); // ✅ redirect after login
-        } else {
-          setIsLogin(true); // after signup, go back to login
-        }
+        setMessage(data.message);
+
+        if (isLogin) navigate("/"); // redirect after login
+        else setIsLogin(true); // after signup, go to login
       } else {
         setMessage(data.message || "Something went wrong");
       }
@@ -52,23 +52,27 @@ const Login = ({ setUser }) => {
     }
   };
 
-  // Google login
+  // ---------------- Google Login ----------------
   const handleGoogleLogin = async (credentialResponse) => {
+    if (!credentialResponse || !credentialResponse.credential) {
+      setMessage("Google login failed");
+      return;
+    }
+
     try {
-      const token = credentialResponse.credential;
-      const response = await fetch("http://localhost:5050/api/google-login", {
+      const response = await fetch("/api/google-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ token: credentialResponse.credential }),
       });
+
       const data = await response.json();
       if (response.ok) {
         const userData = { name: data.name, email: data.email };
         localStorage.setItem("user", JSON.stringify(userData));
         setUser(userData);
         setMessage(data.message);
-
-        navigate("/"); // ✅ redirect after Google login
+        navigate("/"); // redirect after Google login
       } else {
         setMessage(data.message || "Google login failed");
       }
