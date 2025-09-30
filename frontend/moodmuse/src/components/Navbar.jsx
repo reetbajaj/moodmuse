@@ -31,10 +31,10 @@ export const Navbar = ({ user, setUser }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null); // critical to update App state
-    setProfileOpen(false);
-    navigate("/"); // redirect to home
+    localStorage.removeItem("user"); // remove user from localStorage
+    setUser(null);                   // update App state
+    setProfileOpen(false);           // close dropdown
+    navigate("/");                   // redirect to home
   };
 
   return (
@@ -72,7 +72,7 @@ export const Navbar = ({ user, setUser }) => {
           />
         </div>
 
-        {/* Profile Icon */}
+        {/* Profile */}
         <div
           className="navbar-profile"
           onClick={() => setProfileOpen(!profileOpen)}
