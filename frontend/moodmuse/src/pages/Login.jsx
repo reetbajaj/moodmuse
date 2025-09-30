@@ -6,7 +6,9 @@ import "./Login.css";
 // Use environment variable for backend
 // Login.jsx
 // Remove process.env for now
-const API_URL = "http://127.0.0.1:5060";
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 
 
 
