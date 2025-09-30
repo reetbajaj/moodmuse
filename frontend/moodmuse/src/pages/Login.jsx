@@ -3,7 +3,8 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-const API_URL = process.env.REACT_APP_API_URL; // Backend URL from env
+// Use environment variable for backend
+const API_URL = import.meta.env ? import.meta.env.VITE_API_URL : process.env.REACT_APP_API_URL;
 
 const Login = ({ setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -29,6 +30,7 @@ const Login = ({ setUser }) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
+
       const data = await response.json();
 
       if (response.ok) {
