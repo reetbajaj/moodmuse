@@ -5,7 +5,9 @@ import "./Login.css";
 
 // Use environment variable for backend
 // Login.jsx
-const API_URL = import.meta.env.VITE_API_URL;
+// Remove process.env for now
+const API_URL = "http://127.0.0.1:5060";
+
 
 
 const Login = ({ setUser }) => {
