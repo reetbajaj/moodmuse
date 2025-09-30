@@ -31,11 +31,15 @@ export const Navbar = ({ user, setUser }) => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // remove user from localStorage
-    setUser(null);                   // update App state
-    setProfileOpen(false);           // close dropdown
-    navigate("/");                   // redirect to home
-  };
+  localStorage.removeItem("user"); // remove frontend stored user
+  setUser(null);                   // reset state in App
+  setProfileOpen(false);           // close dropdown
+  navigate("/login");    
+  console.log("Navbar user:", user);
+          // redirect
+};
+
+
 
   return (
     <header className="navbar">
