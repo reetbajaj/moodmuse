@@ -6,10 +6,7 @@ import "./Login.css";
 // Use environment variable for backend
 // Login.jsx
 // Remove process.env for now
-const API_URL = process.env.REACT_APP_API_URL;
-
-
-
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 const Login = ({ setUser }) => {
