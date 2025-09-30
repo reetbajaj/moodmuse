@@ -3,6 +3,8 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
+const API_URL = process.env.REACT_APP_API_URL; // Backend URL from env
+
 const Login = ({ setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
@@ -19,7 +21,7 @@ const Login = ({ setUser }) => {
     setLoading(true);
     setMessage("");
 
-    const url = isLogin ? "/api/login" : "/api/signup"; // proxy handles full URL
+    const url = isLogin ? `${API_URL}/api/login` : `${API_URL}/api/signup`;
 
     try {
       const response = await fetch(url, {
@@ -60,7 +62,7 @@ const Login = ({ setUser }) => {
     }
 
     try {
-      const response = await fetch("/api/google-login", {
+      const response = await fetch(`${API_URL}/api/google-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: credentialResponse.credential }),
