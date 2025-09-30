@@ -7,6 +7,11 @@ CORS(app)  # allow cross-origin requests from React frontend
 # Temporary in-memory storage
 users = []
 
+@app.route('/')
+def home():
+    return "Flask API is running!"
+
+
 @app.route('/api/signup', methods=['POST'])
 def signup():
     data = request.get_json()
