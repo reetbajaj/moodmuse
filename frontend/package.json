@@ -4,20 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "preinstall": "npx npm@10 install --legacy-peer-deps || true",
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview",
-  "start": "vite"
-},
-
-  "proxy": "https://refactored-space-adventure-69vqpp4rjx6j24rvg-5050.app.github.dev/"
-
-  ,
-
+    "preinstall": "npx npm@10 install --legacy-peer-deps || true",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite"
+  },
+  "proxy": "https://refactored-space-adventure-69vqpp4rjx6j24rvg-5050.app.github.dev/",
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
-    "@react-spring/web": "^10.0.3",
+    "@react-spring/web": "^9.7.5",
     "lottie-react": "^2.4.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
