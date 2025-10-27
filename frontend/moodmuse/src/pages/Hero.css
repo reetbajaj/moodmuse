@@ -1,0 +1,74 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* prevents scrolling */
+  font-family: 'Jockey One',sans-serif;
+}
+
+#root {
+  height: 100%;
+}
+
+.hero {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  text-align: center;
+  transform: translateY(-220px);
+  z-index: 5;
+  position: relative;
+}
+
+.hero-title {
+
+  font-family: 'Jockey One',sans-serif;
+  margin-top: 350px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.hero-title .mood {
+  font-size: 130px;
+  color: #318074 !important;
+}
+
+.hero-title .muse {
+  color: white;
+  font-size: 130px;
+}
+
+.hero-tagline {
+  font-size: 25px;
+  color: white;
+  margin-top: 1px;
+  font-style: italic;
+  font-weight: 2000;
+  margin-top: 10px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.hero-button {
+  margin-top: 0px;
+  padding: 12px 40px;
+  font-size: 20px;
+  font-weight: 400;
+  background-color: #318074; /* lighter green */
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 3; /* make sure it's on top */
+}
+
+.hero-button:hover {
+  background-color: #32887d; /* slightly darker on hover */
+}
