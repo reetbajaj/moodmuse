@@ -4,10 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "react-scripts start",
     "dev": "vite",
     "build": "npm install --legacy-peer-deps && vite build",
-    "lint": "eslint .",
     "preview": "vite preview"
   },
   "proxy": "https://refactored-space-adventure-69vqpp4rjx6j24rvg-5050.app.github.dev/"
