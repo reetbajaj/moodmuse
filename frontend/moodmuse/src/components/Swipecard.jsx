@@ -7,13 +7,21 @@ const Swipecard = ({ options }) => {
   const [finalChoice, setFinalChoice] = useState(null);
   const childRefs = useRef(options.map(() => React.createRef()));
 
+  // ✅ Circular index helper
+  const nextIndex = (index) => {
+    if (index < 0) return options.length - 1;  // loop backward
+    if (index >= options.length) return 0;     // loop forward
+    return index;
+  };
+
+  // ✅ Swiped callback
   const swiped = (direction, option, index) => {
     if (direction === "right") {
       console.log("✅ Accepted:", option);
       setFinalChoice(option); // store final choice
     } else if (direction === "left") {
       console.log("❌ Rejected:", option);
-      setCurrentIndex(index - 1);
+      setCurrentIndex(nextIndex(index - 1)); // loop to first if at start
     }
   };
 
@@ -21,10 +29,12 @@ const Swipecard = ({ options }) => {
     console.log(option, "left the screen");
   };
 
+  // ✅ Button swipe handler
   const swipe = async (dir) => {
     if (finalChoice) return;
     if (currentIndex >= 0 && currentIndex < options.length) {
       await childRefs.current[currentIndex].current.swipe(dir);
+      setCurrentIndex(nextIndex(currentIndex - 1)); // circular move
     }
   };
 
@@ -33,30 +43,45 @@ const Swipecard = ({ options }) => {
       {!finalChoice ? (
         <>
           <div className="swipe-container">
-            {options.map((option, index) => (
-              <TinderCard
-                ref={childRefs.current[index]}
-                className="swipe"
-                key={option}
-                onSwipe={(dir) => swiped(dir, option, index)}
-                onCardLeftScreen={() => outOfFrame(option)}
-                preventSwipe={["up", "down"]}
-              >
-                <div className="swipe-card">{option}</div>
-              </TinderCard>
-            ))}
+            {options.map((option, index) =>
+              index === currentIndex ? (
+                <TinderCard
+                  ref={childRefs.current[index]}
+                  className="swipe"
+                  key={option}
+                  onSwipe={(dir) => swiped(dir, option, index)}
+                  onCardLeftScreen={() => outOfFrame(option)}
+                  preventSwipe={["up", "down"]}
+                  style={{
+                    zIndex: index === currentIndex ? 10 : 0,
+                    display: index === currentIndex ? "block" : "none",
+                  }}
+                >
+                  <div className="swipe-card">{option}</div>
+                </TinderCard>
+              ) : null
+            )}
           </div>
 
-          {/* ✅ ❌ Buttons on the background sides */}
-          <button className="bg-btn reject" onClick={() => swipe("left")}>❌</button>
-          <button className="bg-btn accept" onClick={() => swipe("right")}>✅</button>
+          {/* ✅ ❌ Buttons */}
+          <div className="button-container">
+            <button className="bg-btn reject" onClick={() => swipe("left")}>
+              ❌
+            </button>
+            <button className="bg-btn accept" onClick={() => swipe("right")}>
+              ✅
+            </button>
+          </div>
         </>
       ) : (
         <div className="final-choice-overlay">
           <div className="final-choice-card">
-            <h2> Your personalised activity:</h2>
+            <h2>Your personalised activity:</h2>
             <div className="chosen-card">{finalChoice}</div>
-            <button className="restart-btn" onClick={() => window.location.reload()}>
+            <button
+              className="restart-btn"
+              onClick={() => setFinalChoice(null)}
+            >
               🔄 Choose Again
             </button>
           </div>

@@ -4,7 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-CORS(app)
+# Enable CORS
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Configure SQLite database
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///moodmuse.db"
@@ -18,6 +19,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     name = db.Column(db.String(120), nullable=False)
+
 # Journal model
 class JournalEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -68,16 +70,40 @@ def journal(email):
         entry = JournalEntry(email=email, activity=data["activity"], content=data["content"])
         db.session.add(entry)
         db.session.commit()
-        return jsonify({"message": "Entry added!", "entry": {"activity": entry.activity, "content": entry.content, "date": entry.date}}), 200
+        return jsonify({
+            "message": "Entry added!",
+            "entry": {
+                "id": entry.id,  # include ID for frontend delete
+                "activity": entry.activity,
+                "content": entry.content,
+                "date": entry.date
+            }
+        }), 200
 
     # GET request
     entries = JournalEntry.query.filter_by(email=email).all()
     return jsonify({
         "entries": [
-            {"activity": e.activity, "content": e.content, "date": e.date}
+            {
+                "id": e.id,  # include ID for frontend delete
+                "activity": e.activity,
+                "content": e.content,
+                "date": e.date
+            }
             for e in entries
         ]
     })
+
+# DELETE a journal entry
+@app.route("/api/journal/<email>/<int:entry_id>", methods=["DELETE"])
+def delete_journal(email, entry_id):
+    entry = JournalEntry.query.filter_by(email=email, id=entry_id).first()
+    if not entry:
+        return jsonify({"message": "Entry not found"}), 404
+
+    db.session.delete(entry)
+    db.session.commit()
+    return jsonify({"message": "Entry deleted successfully"}), 200
 
 @app.route("/logout", methods=["POST"])
 def logout():

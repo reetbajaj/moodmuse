@@ -126,7 +126,7 @@
   left: 550px;
   top: 20%;
   transform: translateY(-50%);
-  font-family: 'Dancing Script', cursive;
+  font-family: 'roboto';
 }
 
 .triangle.top .triangle-content{
@@ -146,10 +146,10 @@
 
 /* Adventure text (vertical right) */
 .adventure-label {
-  right: 550px;
+  right: 480px;
   bottom: 13%;
   transform: translateY(-50%);
-  font-family: 'Dancing Script', cursive;
+  font-family: 'roboto';
 }
 .pixel-overlay {
   position: absolute;

@@ -1,13 +1,8 @@
 import React, { useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-// Use environment variable for backend
-// Login.jsx
-// Remove process.env for now
-const API_URL = import.meta.env.VITE_API_URL;
-
+const API_URL = "https://sturdy-xylophone-69vqpp4rjxxgcrrx7-5060.app.github.dev";
 
 const Login = ({ setUser }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -59,36 +54,6 @@ const Login = ({ setUser }) => {
     }
   };
 
-  // ---------------- Google Login ----------------
-  const handleGoogleLogin = async (credentialResponse) => {
-    if (!credentialResponse || !credentialResponse.credential) {
-      setMessage("Google login failed");
-      return;
-    }
-
-    try {
-      const response = await fetch(`${API_URL}/api/google-login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: credentialResponse.credential }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        const userData = { name: data.name, email: data.email };
-        localStorage.setItem("user", JSON.stringify(userData));
-        setUser(userData);
-        setMessage(data.message);
-        navigate("/"); // redirect after Google login
-      } else {
-        setMessage(data.message || "Google login failed");
-      }
-    } catch (err) {
-      console.error(err);
-      setMessage("Error connecting to server");
-    }
-  };
-
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -124,15 +89,6 @@ const Login = ({ setUser }) => {
             {loading ? "Processing..." : isLogin ? "Login" : "Sign Up"}
           </button>
         </form>
-
-        {isLogin && (
-          <div style={{ margin: "20px 0" }}>
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={() => setMessage("Google login failed")}
-            />
-          </div>
-        )}
 
         {message && <p className="message">{message}</p>}
 

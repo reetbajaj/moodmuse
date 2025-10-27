@@ -15,29 +15,9 @@ export const Navbar = ({ user, setUser }) => {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [showSearch, setShowSearch] = useState(false);
-
-  const searchRef = useRef(null);
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setShowSearch(false);
-        setProfileOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleLogout = () => {
-  localStorage.removeItem("user"); // remove frontend stored user
-  setUser(null);                   // reset state in App
-  setProfileOpen(false);           // close dropdown
-  navigate("/login");    
-  console.log("Navbar user:", user);
-          // redirect
-};
+  const handleProfileClick = () => {
+    navigate("/login"); // Redirect to login/signup
+  };
 
 
 
@@ -60,33 +40,13 @@ export const Navbar = ({ user, setUser }) => {
       </nav>
 
       <div className="navbar-right">
-        {/* Search */}
-        <div className="navbar-search-container" ref={searchRef}>
-          <img
-            src={search}
-            alt="search"
-            className="navbar-search-icon"
-            onClick={() => setShowSearch(!showSearch)}
-          />
-          <input
-            type="text"
-            className={`navbar-search ${showSearch ? "active" : ""}`}
-            placeholder="Search..."
-            autoFocus={showSearch}
-          />
-        </div>
+      
 
         {/* Profile */}
         <div
           className="navbar-profile"
-          onClick={() => setProfileOpen(!profileOpen)}
-        >
+          onClick={handleProfileClick}>
           <img src={acc} alt="Profile" className="profile-pic" />
-          {profileOpen && user && (
-            <div className="profile-dropdown">
-              <button onClick={handleLogout}>Logout</button>
-            </div>
-          )}
         </div>
 
         {/* Welcome User */}
